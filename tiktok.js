@@ -1,3 +1,15 @@
+/*
+NOTE : mau sc gratis lagi?, silahkan join ke channel WhatsApp saya
+
+ Credits By KiiCode Projects 
+ Telegram : @kiicode
+ Channel WhatsApp : https://whatsapp.com/channel/0029VaZSdai5Ui2TMoNsYo0J
+ KiiCode Api : api.kiicodeit.me
+ Elxyz Api : api.elxyz.me
+
+ Tolong cr jangan di hapus, hargai saya sebagai yang buat 🙏
+*/
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const formData = require('form-data');
