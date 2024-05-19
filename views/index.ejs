@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Downloader</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f8f9fa;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    #result {
+      margin-top: 20px;
+    }
+    #result img {
+      width: 100%;
+      max-width: 400px;
+    }
+    .download-btn {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">TikTok Downloader</h1>
+    <form id="downloadForm">
+      <div class="form-group">
+        <input type="url" class="form-control" id="url" placeholder="Enter TikTok URL" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Download</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('url').value;
+      if (!url) return alert('Please enter a URL');
+
+      const res = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      
+      if (data.status) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+          <h2>${data.title}</h2>
+          <p>${data.taken_at}</p>
+          <img src="${data.cover}" alt="${data.title}">
+          <ul class="list-group mt-3">
+            ${data.data.map(item => `
+              <li class="list-group-item">
+                <a href="${item.url}" target="_blank">${item.type}</a>
+                <button class="btn btn-success download-btn" onclick="window.open('${item.url}')">Download</button>
+              </li>`).join('')}
+          </ul>
+        `;
+      } else {
+        document.getElementById('result').innerHTML = `<p class="text-danger">Error: ${data.msg}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
